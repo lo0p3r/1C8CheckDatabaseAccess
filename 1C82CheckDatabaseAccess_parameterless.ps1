@@ -22,6 +22,14 @@ $serverName = "server"
 # Имя базы данных на сервере приложений 1С
 $databaseName = "database"
 
+# Если х64 система, то перенаправим скрипт в х86 powershell
+if ($env:Processor_Architecture -ne "x86")
+{
+    #write-warning "Running PowerShell x86"
+    &"$env:windir\syswow64\windowspowershell\v1.0\powershell.exe" -noninteractive -noprofile -executionpolicy bypass -file $myinvocation.Mycommand.path
+    exit
+}
+
 try {
     # Создать COM-объект для подключения к серверу приложений 1С
     $connector = New-Object -ComObject "V82.ComConnector"
